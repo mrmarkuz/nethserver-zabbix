@@ -30,12 +30,12 @@ use NethServer::Password;
 
 ## Test if the zabbix Mysql DB exists, if yes, then upgrade it
      if ( -d '/var/lib/mysql/zabbix') {
-        system ('zcat /usr/share/doc/zabbix-server-mysql-3.4.3/create.sql.gz | /usr/bin/mysql zabbix');
+        system ('zcat /usr/share/doc/zabbix-server-mysql-*/create.sql.gz | /usr/bin/mysql zabbix');
      }
 
 ##test if the mysql db is created, if not then the user and the mysql db are created
      if ( ! -d '/var/lib/mysql/zabbix') {
-my $password = NethServer::Password::store('zabbix') || die('Could not generate roundcubemail password!');
+my $password = NethServer::Password::store('zabbix') || die('Could not generate zabbix password!');
 
 my $commands = join("\n", 
               "CREATE DATABASE IF NOT EXISTS zabbix CHARACTER SET utf8 COLLATE utf8_bin;",
@@ -49,6 +49,6 @@ open(FH, '|-', '/usr/bin/mysql -B -f') || die("[ERROR] Could not connect to mysq
 print FH $commands;     
 close(FH);
 
-system ('zcat /usr/share/doc/zabbix-server-mysql-3.4.3/create.sql.gz | /usr/bin/mysql zabbix');
+system ('zcat /usr/share/doc/zabbix-server-mysql-*/create.sql.gz | /usr/bin/mysql zabbix');
 
 exit (0);}
