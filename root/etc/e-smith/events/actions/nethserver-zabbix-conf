@@ -38,7 +38,7 @@ use NethServer::Password;
 my $password = NethServer::Password::store('zabbix') || die('Could not generate roundcubemail password!');
 
 my $commands = join("\n", 
-              "CREATE DATABASE IF NOT EXISTS zabbix SET utf8 COLLATE utf8_bin;",
+              "CREATE DATABASE IF NOT EXISTS zabbix CHARACTER SET utf8 COLLATE utf8_bin;",
 	      "GRANT ALL PRIVILEGES ON `zabbix`.* TO 'zabbix'\@'localhost' IDENTIFIED BY '$password';",
 	      "FLUSH PRIVILEGES;"
      ) . "\n";
