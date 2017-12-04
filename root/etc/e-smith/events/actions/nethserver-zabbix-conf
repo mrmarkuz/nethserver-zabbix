@@ -1,0 +1,54 @@
+#!/usr/bin/perl -w
+
+#
+# Copyright (C) 2013 Nethesis S.r.l.
+# http://www.nethesis.it - support@nethesis.it
+# 
+# This script is part of NethServer.
+# 
+# NethServer is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License,
+# or any later version.
+# 
+# NethServer is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with NethServer.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+package esmith;
+
+use strict;
+use Errno;
+use esmith::util;
+use NethServer::Password;
+
+
+## Test if the zabbix Mysql DB exists, if yes, then upgrade it
+     if ( -d '/var/lib/mysql/zabbix') {
+        system ('zcat /usr/share/doc/zabbix-server-mysql-3.4.3/create.sql.gz | /usr/bin/mysql zabbix');
+     }
+
+##test if the mysql db is created, if not then the user and the mysql db are created
+     if ( ! -d '/var/lib/mysql/zabbix') {
+my $password = NethServer::Password::store('zabbix') || die('Could not generate roundcubemail password!');
+
+my $commands = join("\n", 
+              "CREATE DATABASE IF NOT EXISTS zabbix SET utf8 COLLATE utf8_bin;",
+	      "GRANT ALL PRIVILEGES ON `zabbix`.* TO 'zabbix'\@'localhost' IDENTIFIED BY '$password';",
+	      "FLUSH PRIVILEGES;"
+     ) . "\n";
+
+print $commands;
+
+open(FH, '|-', '/usr/bin/mysql -B -f') || die("[ERROR] Could not connect to mysql");
+print FH $commands;     
+close(FH);
+
+system ('zcat /usr/share/doc/zabbix-server-mysql-3.4.3/create.sql.gz | /usr/bin/mysql zabbix');
+
+exit (0);}
