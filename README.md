@@ -15,3 +15,8 @@ The Zabbix db user password is stored in /var/lib/nethserver/secrets/zabbix
 ## Documentation
 
 https://community.nethserver.org/t/howto-install-zabbix-3-4/7841
+
+## ToDo
+
+Automate initial setup
+Basic Nethgui setup
