@@ -1,8 +1,8 @@
 Summary: nethserver-zabbix sets up the monitoring system
 %define name nethserver-zabbix
 Name: %{name}
-%define version 0.1.0
-%define release 2
+%define version 0.0.1
+%define release 3
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -18,9 +18,11 @@ BuildArch: noarch
 NethServer Zabbix configuration
 
 %changelog
-* Sat Dec 09 2017 Markus Neuberger <info@markusneuberger.at> - 0.1.0-2
+* Sat Jan 27 2017 Markus Neuberger <info@markusneuberger.at> - 0.0.1-3
+- Changed versioning
+* Sat Dec 09 2017 Markus Neuberger <info@markusneuberger.at> - 0.0.1-2
 - Added automatic initial config
-* Mon Dec 04 2017 Markus Neuberger <info@markusneuberger.at> - 0.1.0-1
+* Mon Dec 04 2017 Markus Neuberger <info@markusneuberger.at> - 0.0.1-1
 - Initial NS7 release
 - Added conflicts nethserver-zabbix22
 

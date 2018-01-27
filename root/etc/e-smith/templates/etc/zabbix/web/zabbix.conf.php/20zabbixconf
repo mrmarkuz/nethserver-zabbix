@@ -11,7 +11,7 @@ $DB['USER']     = 'zabbix';
 
 {
     use esmith::util;
-    my $password = NethServer::Password::store('zabbix') || die('Could not generate roundcubemail password!');
+    my $password = NethServer::Password::store('zabbix') || die('Could not generate zabbix password!');
     $OUT .= "\$DB['PASSWORD'] = '$password'\n";
 }
 #$DB['PASSWORD'] = 'Ve0zdeuuNIx77Q7F';
