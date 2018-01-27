@@ -18,7 +18,7 @@ BuildArch: noarch
 NethServer Zabbix configuration
 
 %changelog
-* Sat Jan 27 2017 Markus Neuberger <info@markusneuberger.at> - 0.0.1-3
+* Sat Jan 27 2018 Markus Neuberger <info@markusneuberger.at> - 0.0.1-3
 - Changed versioning
 * Sat Dec 09 2017 Markus Neuberger <info@markusneuberger.at> - 0.0.1-2
 - Added automatic initial config
