@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Create DB and user
+echo "create role zabbix with CREATEDB LOGIN PASSWORD '$(cat /var/lib/nethserver/secrets/zabbix)'" | sudo -u postgres psql
+echo "create database zabbix owner zabbix" | sudo -u postgres psql
+
+
