@@ -39,7 +39,8 @@ templates2events("/var/lib/pgsql/data/pg_hba.conf", $event);
 event_services($event,
                'zabbix-server' => 'restart',
                'zabbix-agent' => 'restart',
-               'httpd' => 'reload'
+               'httpd' => 'reload',
+               'postgresql' => 'restart'
 );
 
 #example2 when you have several events with several 
