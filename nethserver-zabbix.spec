@@ -30,6 +30,10 @@ NethServer Zabbix configuration
 - Initial NS7 release
 - Added conflicts nethserver-zabbix22
 
+%pre
+getent passwd zabbix >/dev/null || useradd -m -d /var/lib/zabbix -s /bin/bash zabbix
+exit 0
+
 %prep
 %setup
 
@@ -45,7 +49,7 @@ rm -f %{name}-%{version}-%{release}-filelist
 %post
 %postun
 
-%clean 
+%clean
 rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}-%{version}-%{release}-filelist

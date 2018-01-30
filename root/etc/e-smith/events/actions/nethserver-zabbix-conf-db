@@ -1,7 +1,12 @@
 #!/bin/bash
 
+# chown logfile
+chown zabbix:zabbix /var/log/zabbix/zabbix_server.log
+
 # Create DB and user
 echo "create role zabbix with CREATEDB LOGIN PASSWORD '$(cat /var/lib/nethserver/secrets/zabbix)'" | sudo -u postgres psql
+echo "alter user zabbix with encrypted password '$(cat /var/lib/nethserver/secrets/zabbix)'" | sudo -u postgres psql
 echo "create database zabbix owner zabbix" | sudo -u postgres psql
 
-
+# Fill DB
+zcat $(rpm -ql zabbix-server-pgsql | grep create.sql.gz) | sudo -u zabbix psql zabbix
