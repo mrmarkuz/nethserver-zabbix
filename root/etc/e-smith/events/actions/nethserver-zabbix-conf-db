@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# chown logfile
-chown zabbix:zabbix /var/log/zabbix/zabbix_server.log
+# create and chown logfiles
+touch /var/log/zabbix/zabbix_server.log /var/log/zabbix/zabbix_agentd.log
+chown zabbix:zabbix /var/log/zabbix/zabbix_server.log /var/log/zabbix/zabbix_agentd.log
 
 # Create DB and user
 echo "create role zabbix with CREATEDB LOGIN PASSWORD '$(cat /var/lib/nethserver/secrets/zabbix)'" | sudo -u postgres psql
