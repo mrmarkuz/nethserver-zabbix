@@ -9,11 +9,5 @@ echo "create role zabbix with CREATEDB LOGIN PASSWORD '$(cat /var/lib/nethserver
 echo "alter user zabbix with encrypted password '$(cat /var/lib/nethserver/secrets/zabbix)'" | sudo -u postgres psql
 echo "create database zabbix owner zabbix" | sudo -u postgres psql
 
-# set zabbix shell to /bin/bash
-usermod -s bin/bash zabbix
-
 # Fill DB
 zcat $(rpm -ql zabbix-server-pgsql | grep create.sql.gz) | sudo -u zabbix psql zabbix
-
-# set zabbix shell to /bin/false again for security
-usermod -s bin/false zabbix
