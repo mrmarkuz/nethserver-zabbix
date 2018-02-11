@@ -12,8 +12,8 @@ use esmith::Build::CreateLinks qw(:all);
 my $event = 'nethserver-zabbix-update';
 event_actions ($event,
      'initialize-default-databases' => '00',
-     'nethserver-zabbix-conf' => '20',
-     'nethserver-zabbix-conf-db' => '30'
+     'nethserver-zabbix-conf' => '10',
+     'nethserver-zabbix-conf-db' => '90'
 );
 
 templates2events("/etc/httpd/conf.d/zabbix.conf", $event);
