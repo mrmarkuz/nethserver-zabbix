@@ -18,6 +18,7 @@ event_actions ($event,
 
 templates2events("/etc/httpd/conf.d/zabbix.conf", $event);
 templates2events("/etc/zabbix/zabbix_server.conf", $event);
+templates2events("/etc/zabbix/zabbix_agentd.conf", $event);
 templates2events("/etc/zabbix/web/zabbix.conf.php", $event);
 templates2events("/var/lib/pgsql/data/pg_hba.conf", $event);
 
