@@ -17,3 +17,7 @@ zcat $(rpm -ql zabbix-server-pgsql | grep create.sql.gz) | sudo -u zabbix psql z
 
 # Set zabbix shell to /bin/false again for security
 usermod -s /bin/false zabbix
+
+# import map images of Andy Wismer
+cd /var/lib/pgsql/data/zabbiximages
+for d in *; do su postgres -c "psql zabbix postgres -c \"insert into images (imageid,imagetype,name,image) values ((select max(imageid) +1 from images),1,'$d',pg_read_binary_file('zabbiximages/$d'));\""; done

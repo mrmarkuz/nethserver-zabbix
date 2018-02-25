@@ -2,7 +2,7 @@ Summary: nethserver-zabbix sets up the monitoring system
 %define name nethserver-zabbix
 Name: %{name}
 %define version 0.0.1
-%define release 4
+%define release 5
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -18,6 +18,9 @@ BuildArch: noarch
 NethServer Zabbix configuration
 
 %changelog
+* Sun Feb 25 2018 Markus Neuberger <info@markusneuberger.at> - 0.0.1-5
+- Added nice map images - thanks to Andy Wismer
+- Added backup script - thanks to Emiliano Vavassori
 * Mon Jan 29 2018 Markus Neuberger <info@markusneuberger.at> - 0.0.1-4
 - Change from mysql to postgresql - thanks to Emiliano Vavassori
 - Integrating zabbix service - thanks to Emiliano Vavassori
