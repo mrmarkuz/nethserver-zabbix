@@ -21,3 +21,6 @@ usermod -s /bin/false zabbix
 # import map images of Andy Wismer
 cd /var/lib/pgsql/data/zabbiximages
 for d in *; do su postgres -c "psql zabbix postgres -c \"insert into images (imageid,imagetype,name,image) values ((select max(imageid) +1 from images),1,'$d',pg_read_binary_file('zabbiximages/$d'));\""; done
+
+# rename backup monitoring script
+mv /usr/local/bin/nethbackup_check /usr/local/bin/nethbackup_check.py
