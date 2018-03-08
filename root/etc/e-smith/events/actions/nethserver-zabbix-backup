@@ -1,0 +1,3 @@
+#!/bin/bash
+
+su - postgres -c "pg_dump zabbix > /var/lib/nethserver/zabbix/backup/zabbix.sql"

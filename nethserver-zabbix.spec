@@ -2,7 +2,7 @@ Summary: nethserver-zabbix sets up the monitoring system
 %define name nethserver-zabbix
 Name: %{name}
 %define version 0.0.1
-%define release 5
+%define release 6
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -18,6 +18,10 @@ BuildArch: noarch
 NethServer Zabbix configuration
 
 %changelog
+* Thu Mar 08 2018 Markus Neuberger <info@markusneuberger.at> - 0.0.1-6
+- Add backup-config - thanks to Andy Wismer
+- Add backup-data - thanks to Andy Wismer
+- Add zabbix postgresql db backup/restore - thanks to Andy Wismer
 * Sun Feb 25 2018 Markus Neuberger <info@markusneuberger.at> - 0.0.1-5
 - Added nice map images - thanks to Andy Wismer
 - Added backup script - thanks to Emiliano Vavassori
@@ -42,12 +46,15 @@ NethServer Zabbix configuration
 
 %build
 perl createlinks
+mkdir -p root/var/lib/nethserver/zabbix/backup
 
 %install
 rm -rf $RPM_BUILD_ROOT
 (cd root; find . -depth -print | cpio -dump $RPM_BUILD_ROOT)
 rm -f %{name}-%{version}-%{release}-filelist
-%{genfilelist} $RPM_BUILD_ROOT > %{name}-%{version}-%{release}-filelist
+%{genfilelist} $RPM_BUILD_ROOT \
+  --dir /var/lib/nethserver/zabbix/backup 'attr(755, postgres, postgres)' \
+> %{name}-%{version}-%{release}-filelist
 
 %post
 %postun

@@ -44,58 +44,20 @@ event_services($event,
                'postgresql' => 'restart'
 );
 
-#example2 when you have several events with several 
-#templates,actions,services to manage
 
+#--------------------------------------------------
+# actions for pre-backup-data event
+#--------------------------------------------------
 
-#templates expand following several events
-#foreach (qw(sysconfig/nfs exports /etc/otherPath /other/path))
-#{
-#    templates2events("/etc/$_", qw(
-#    nethserver-nfs-update
-#    other-event-name
-#    event-name
-#    ));
-#}
+$event = 'pre-backup-data';
 
-#Template to expand following several events
-#foreach (qw(exports))
-#{
-#    templates2events("/etc/$_", qw(
-#    interface-update
-#    ibay-create
-#    ibay-delete
-#    ibay-modify
-#    ));
-#}
+event_actions($event, 'nethserver-zabbix-backup' => 50);
 
-#it could be also
-#templates2events("/etc/exports",qw(
-#    interface-update
-#    ibay-create
-#    ibay-delete
-#    ibay-modify
-#    ));
+#--------------------------------------------------
+# actions for post-restore-data event
+#--------------------------------------------------
 
+$event = 'post-restore-data';
 
-
-#restart services following one event
-#foreach $event (qw(nethserver-nfs-update))
-#{
-#    event_services($event,
-#        'nfs-lock' => 'restart', 
-#        'nfs' => 'restart',
-#        'rpcbind' => 'restart' );
-#}
-
-
-#launch an action following several events
-# number < 10 -> action start before template expand
-# number < 90 -> action start after template expansion
-# number > 90 < 100 -> action starts after the service restart
-
-#for $event (qw(nethserver-nfs-update interface-update ibay-create ibay-delete ibay-modify))
-#{
-#    event_actions ($event, 'nethserver-name-Action' => '95');
-#    event_actions ($event, 'nethserver-Other-Action' => '95');
-#}
+event_actions($event, 'nethserver-zabbix-restore' => 50);
+event_services($event, 'zabbix-server' => 'restart');
