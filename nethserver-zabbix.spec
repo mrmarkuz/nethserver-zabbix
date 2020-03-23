@@ -20,8 +20,9 @@ NethServer Zabbix configuration
 %changelog
 * Mon Mar 23 2020 Markus Neuberger <info@markusneuberger.at> - 0.0.1-7
 - Add new images - thanks to Andy Wismer
-- Add Zabbix to cockpit
-- Add script zabbixUnicode to migrate db to unicode encoding
+- Add Zabbix application to cockpit
+- New zabbix DBs are created with unicode
+- Add script zabbixUnicode to migrate old db to unicode
 * Thu Mar 08 2018 Markus Neuberger <info@markusneuberger.at> - 0.0.1-6
 - Add backup-config - thanks to Andy Wismer
 - Add backup-data - thanks to Andy Wismer
@@ -67,8 +68,8 @@ cp -a ui/* %{buildroot}/usr/share/cockpit/%{name}/
 
 %{genfilelist} $RPM_BUILD_ROOT \
   --file /etc/sudoers.d/50_nsapi_nethserver_zabbix 'attr(0440,root,root)' \
-  --file /usr/local/bin/zabbixUnicode.sh 'attr(0440,root,root)' \
-  --dir /var/lib/nethserver/zabbix/backup 'attr(755, postgres, postgres)' \
+  --file /usr/local/bin/zabbixUnicode.sh 'attr(770,root,root)' \
+  --dir /var/lib/nethserver/zabbix/backup 'attr(755,postgres,postgres)' \
 > %{name}-%{version}-%{release}-filelist
 
 %post
