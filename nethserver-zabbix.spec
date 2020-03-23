@@ -18,7 +18,7 @@ BuildArch: noarch
 NethServer Zabbix configuration
 
 %changelog
-* Sun Mar 22 2018 Markus Neuberger <info@markusneuberger.at> - 0.0.1-7
+* Mon Mar 23 2020 Markus Neuberger <info@markusneuberger.at> - 0.0.1-7
 - Add new images - thanks to Andy Wismer
 - Add Zabbix to cockpit
 * Thu Mar 08 2018 Markus Neuberger <info@markusneuberger.at> - 0.0.1-6
@@ -61,6 +61,9 @@ mkdir -p %{buildroot}/usr/libexec/nethserver/api/%{name}/
 
 cp -a %{name}.json %{buildroot}/usr/share/cockpit/nethserver/applications/
 cp -a api/* %{buildroot}/usr/libexec/nethserver/api/%{name}/
+
+cp -a ui/manifest.json %{buildroot}/usr/share/cockpit/%{name}/
+cp -a ui/logo.png %{buildroot}/usr/share/cockpit/%{name}/
 
 %{genfilelist} $RPM_BUILD_ROOT \
   --file /etc/sudoers.d/50_nsapi_nethserver_zabbix 'attr(0440,root,root)' \

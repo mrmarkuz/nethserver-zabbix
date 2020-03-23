@@ -12,7 +12,7 @@
     "name": "Markus Neuberger"
   },
   "infoapi": {
-    "path": "nethserver-omada/read"
+    "path": "nethserver-zabbix/read"
   },
   "icon": "logo.png",
   "external": true

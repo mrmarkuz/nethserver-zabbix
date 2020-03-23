@@ -19,12 +19,13 @@
 # along with NethServer.  If not, see COPYING.
 #
 
+my $action = $input->{'action'};
+
 if ($action eq 'app-info') {
     my $protocol = $input->{'location'}->{'protocol'};
     my $host = $input->{'location'}->{'hostname'};
     $output = {
         'url' => "$protocol//$host/zabbix",
+        printf '{"url":"%s"}' "${protocol}//${host}/zabbix"
     };
 }
-
-print encode_json($output);
