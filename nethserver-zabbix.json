@@ -1,12 +1,12 @@
 {
   "id": "nethserver-zabbix",
   "name": "Zabbix",
-  "summary": "Zabbix Monitoring",
-  "description": "Zabbix Monitoring",
+  "summary": "Provides real-time monitoring",
+  "description": "Provides real-time monitoring",
   "url": "",
   "provides": ["nethserver-zabbix"],
   "release": {
-    "version": "0.1"
+    "version": "0.0.1"
   },
   "author": {
     "name": "Markus Neuberger"

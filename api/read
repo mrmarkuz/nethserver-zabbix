@@ -19,13 +19,11 @@
 # along with NethServer.  If not, see COPYING.
 #
 
-my $action = $input->{'action'};
+input=$(cat)
+action=$(jq -r .action <<<"$input")
+protocol=$(jq -r .location.protocol <<<"$input")
+host=$(jq -r .location.hostname <<<"$input")
 
-if ($action eq 'app-info') {
-    my $protocol = $input->{'location'}->{'protocol'};
-    my $host = $input->{'location'}->{'hostname'};
-    $output = {
-        'url' => "$protocol//$host/zabbix",
-        printf '{"url":"%s"}' "${protocol}//${host}/zabbix"
-    };
-}
+if [[ $action == "app-info" ]]; then
+    printf '{"url":"%s"}' "${protocol}//${host}/zabbix"
+fi
