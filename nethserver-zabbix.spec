@@ -58,12 +58,11 @@ rm -f %{name}-%{version}-%{release}-filelist
 
 mkdir -p %{buildroot}/usr/share/cockpit/nethserver/applications/
 mkdir -p %{buildroot}/usr/libexec/nethserver/api/%{name}/
+mkdir -p %{buildroot}/usr/share/cockpit/%{name}/
 
 cp -a %{name}.json %{buildroot}/usr/share/cockpit/nethserver/applications/
 cp -a api/* %{buildroot}/usr/libexec/nethserver/api/%{name}/
-
-cp -a ui/manifest.json %{buildroot}/usr/share/cockpit/%{name}/
-cp -a ui/logo.png %{buildroot}/usr/share/cockpit/%{name}/
+cp -a ui/* %{buildroot}/usr/share/cockpit/%{name}/
 
 %{genfilelist} $RPM_BUILD_ROOT \
   --file /etc/sudoers.d/50_nsapi_nethserver_zabbix 'attr(0440,root,root)' \
