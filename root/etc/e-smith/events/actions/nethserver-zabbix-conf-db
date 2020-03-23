@@ -7,7 +7,8 @@
 # Create DB and user
 echo "create role zabbix with CREATEDB LOGIN PASSWORD '$(cat /var/lib/nethserver/secrets/zabbix)'" | sudo -u postgres psql
 echo "alter user zabbix with encrypted password '$(cat /var/lib/nethserver/secrets/zabbix)'" | sudo -u postgres psql
-echo "create database zabbix owner zabbix" | sudo -u postgres psql
+#echo "create database zabbix owner zabbix" | sudo -u postgres psql
+sudo -i -u postgres createdb -O zabbix -E Unicode -T template0 zabbix
 
 # Set zabbix shell to bash for login as zabbix user to write db
 usermod -s /bin/bash zabbix
