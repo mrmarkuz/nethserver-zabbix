@@ -55,7 +55,15 @@ mkdir -p root/var/lib/nethserver/zabbix/backup
 rm -rf $RPM_BUILD_ROOT
 (cd root; find . -depth -print | cpio -dump $RPM_BUILD_ROOT)
 rm -f %{name}-%{version}-%{release}-filelist
+
+mkdir -p %{buildroot}/usr/share/cockpit/nethserver/applications/
+mkdir -p %{buildroot}/usr/libexec/nethserver/api/%{name}/
+
+cp -a %{name}.json %{buildroot}/usr/share/cockpit/nethserver/applications/
+cp -a api/* %{buildroot}/usr/libexec/nethserver/api/%{name}/
+
 %{genfilelist} $RPM_BUILD_ROOT \
+  --file /etc/sudoers.d/50_nsapi_nethserver_zabbix 'attr(0440,root,root)' \
   --dir /var/lib/nethserver/zabbix/backup 'attr(755, postgres, postgres)' \
 > %{name}-%{version}-%{release}-filelist
 
