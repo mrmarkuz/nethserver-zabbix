@@ -2,7 +2,7 @@ Summary: nethserver-zabbix sets up the monitoring system
 %define name nethserver-zabbix
 Name: %{name}
 %define version 0.0.1
-%define release 6
+%define release 7
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -18,6 +18,9 @@ BuildArch: noarch
 NethServer Zabbix configuration
 
 %changelog
+* Sun Mar 22 2018 Markus Neuberger <info@markusneuberger.at> - 0.0.1-7
+- Add new images - thanks to Andy Wismer
+- Add Zabbix to cockpit
 * Thu Mar 08 2018 Markus Neuberger <info@markusneuberger.at> - 0.0.1-6
 - Add backup-config - thanks to Andy Wismer
 - Add backup-data - thanks to Andy Wismer

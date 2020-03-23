@@ -1,0 +1,7 @@
+#
+# nsapi_nethserver_zabbix
+#
+Cmnd_Alias NSAPI_NETHSERVER_ZABBIX = \
+    /usr/libexec/nethserver/api/nethserver-nextcloud/read
+
+Defaults!NSAPI_NETHSERVER_ZABBIX !requiretty
