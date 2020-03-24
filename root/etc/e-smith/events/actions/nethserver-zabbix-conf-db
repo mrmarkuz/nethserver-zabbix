@@ -24,5 +24,5 @@ mv /root/zabbiximages /var/lib/pgsql/data/
 cd /var/lib/pgsql/data/zabbiximages
 for d in *.png; do su postgres -c "psql zabbix postgres -c \"insert into images (imageid,imagetype,name,image) values ((select max(imageid) +1 from images),1,'$d',pg_read_binary_file('zabbiximages/$d'));\""; done
 
-# rename backup monitoring script
+# copy backup monitoring script
 cp /usr/local/bin/nethbackup_check /usr/local/bin/nethbackup_check.py
