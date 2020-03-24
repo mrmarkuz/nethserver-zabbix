@@ -1,7 +1,10 @@
+
 #
 # 50zabbix
 #
+
 RewriteEngine On
 RewriteCond %\{HTTPS\} !=on
 RewriteRule ^/zabbix(/.*)?$  https://%\{HTTP_HOST\}/zabbix$1  [L,R=301]
+
 
