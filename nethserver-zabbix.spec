@@ -23,6 +23,7 @@ NethServer Zabbix configuration
 - Add Zabbix application to cockpit
 - New zabbix DBs are created with unicode
 - Add script zabbixUnicode to migrate old db to unicode
+- Add HTTPS redirect
 * Thu Mar 08 2018 Markus Neuberger <info@markusneuberger.at> - 0.0.1-6
 - Add backup-config - thanks to Andy Wismer
 - Add backup-data - thanks to Andy Wismer
