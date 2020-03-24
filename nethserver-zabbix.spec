@@ -70,10 +70,10 @@ cp -a ui/* %{buildroot}/usr/share/cockpit/%{name}/
 %{genfilelist} $RPM_BUILD_ROOT \
   --file /etc/sudoers.d/50_nsapi_nethserver_zabbix 'attr(0440,root,root)' \
   --file /usr/libexec/nethserver/api/%{name}/read 'attr(775,root,root)' \
-  --file /usr/local/bin/nethbackup_check.py 'attr(770,root,root)' \
   --file /usr/local/bin/zabbixUnicode.sh 'attr(770,root,root)' \
   --dir /var/lib/nethserver/zabbix/backup 'attr(755,postgres,postgres)' \
 > %{name}-%{version}-%{release}-filelist
+exit 0
 
 %post
 %postun
@@ -84,4 +84,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}-%{version}-%{release}-filelist
 %defattr(-,root,root)
 %dir %{_nseventsdir}/%{name}-update
+%exclude /usr/local/bin/*.py*
+%exclude /root/zbx-nethbackup-check-master/*.py*
+%attr(0770,root,root) /usr/local/bin/nethbackup_check.py
 %doc COPYING
