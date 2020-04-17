@@ -1,7 +1,7 @@
 {
   "id": "nethserver-zabbix",
   "name": "Zabbix",
-  "summary": "Provides real-time monitoring",
+  "summary": "Nethserver integration of Zabbix monitoring",
   "description": "Provides real-time monitoring",
   "url": "",
   "provides": ["nethserver-zabbix"],
