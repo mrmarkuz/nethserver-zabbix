@@ -2,14 +2,15 @@ Summary: nethserver-zabbix sets up the monitoring system
 %define name nethserver-zabbix
 Name: %{name}
 %define version 0.0.1
-%define release 7
+%define release 8
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
-Requires: nethserver-postgresql,zabbix-server-pgsql,zabbix-web-pgsql,zabbix-agent,net-snmp-utils,nethserver-net-snmp,php-pgsql
+Requires: zabbix-web-pgsql-scl
+Requires: nethserver-postgresql,zabbix-server-pgsql,zabbix-agent,net-snmp-utils,nethserver-net-snmp,php-pgsql,nethserver-rh-php72-php-fpm
 Conflicts: nethserver-zabbix22
 BuildRequires: nethserver-devtools net-snmp-utils nethserver-net-snmp
 BuildArch: noarch
@@ -18,6 +19,8 @@ BuildArch: noarch
 NethServer Zabbix configuration
 
 %changelog
+* Mon May 18 2020 Markus Neuberger <info@markusneuberger.at> - 0.0.1-8
+- Add support for Zabbix 5 LTS - thanks to dz00te
 * Mon Mar 23 2020 Markus Neuberger <info@markusneuberger.at> - 0.0.1-7
 - Add new images - thanks to Andy Wismer
 - Add Zabbix application to cockpit

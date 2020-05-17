@@ -8,6 +8,10 @@ Alias /zabbix /usr/share/zabbix
     Options FollowSymLinks
     AllowOverride None
 
+    <FilesMatch \.php$>
+      SetHandler "proxy:fcgi://127.0.0.1:9002"
+    </FilesMatch>
+
     <IfModule mod_authz_core.c>
       # Apache 2.4
       Require all granted
