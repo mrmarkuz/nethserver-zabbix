@@ -9,8 +9,8 @@ License: GPL
 Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
-Requires: zabbix-web-pgsql-scl
-Requires: nethserver-postgresql,zabbix-server-pgsql,zabbix-agent,net-snmp-utils,nethserver-net-snmp,php-pgsql,nethserver-rh-php72-php-fpm
+#Requires: zabbix-web-pgsql-scl
+Requires: nethserver-postgresql,zabbix-server-pgsql,zabbix-agent,zabbix-web,net-snmp-utils,nethserver-net-snmp,php-pgsql,nethserver-rh-php73-php-fpm
 Conflicts: nethserver-zabbix22
 BuildRequires: nethserver-devtools net-snmp-utils nethserver-net-snmp
 BuildArch: noarch

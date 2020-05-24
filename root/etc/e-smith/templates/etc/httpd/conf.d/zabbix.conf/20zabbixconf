@@ -9,7 +9,7 @@ Alias /zabbix /usr/share/zabbix
     AllowOverride None
 
     <FilesMatch \.php$>
-      SetHandler "proxy:fcgi://127.0.0.1:9002"
+      SetHandler "proxy:fcgi://127.0.0.1:9003"
     </FilesMatch>
 
     <IfModule mod_authz_core.c>
