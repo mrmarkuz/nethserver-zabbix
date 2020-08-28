@@ -25,7 +25,7 @@ usermod -s /bin/false zabbix
 # import map images of Andy Wismer only if not exist to not slow down nethserver-zabbix-update
 if [ ! -d "/var/lib/pgsql/data/zabbiximages" ]; then
   mkdir -p /var/lib/pgsql/data/zabbiximages
-  tar -xzf /root/images.tar.gz /var/lib/pgsql/data/zabbiximages
+  tar -xzf /root/images.tar.gz -C /var/lib/pgsql/data/zabbiximages
   cd /var/lib/pgsql/data/zabbiximages
   for d in *.png; do su postgres -c "psql zabbix postgres -c \"insert into images (imageid,imagetype,name,image) values ((select max(imageid) +1 from images),1,'$d',pg_read_binary_file('zabbiximages/$d'));\" 1>&- 2>&-"; done
 fi
