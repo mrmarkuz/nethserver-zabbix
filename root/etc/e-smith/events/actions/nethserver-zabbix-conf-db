@@ -5,24 +5,27 @@
 #chown zabbix:zabbix /var/log/zabbix/zabbix_server.log /var/log/zabbix/zabbix_agentd.log
 
 # Create DB and user
-echo "create role zabbix with CREATEDB LOGIN PASSWORD '$(cat /var/lib/nethserver/secrets/zabbix)'" | sudo -u postgres psql
-echo "alter user zabbix with encrypted password '$(cat /var/lib/nethserver/secrets/zabbix)'" | sudo -u postgres psql
+echo "create role zabbix with CREATEDB LOGIN PASSWORD '$(cat /var/lib/nethserver/secrets/zabbix)'" | sudo -i -u postgres psql 1>&- 2>&-
+echo "alter user zabbix with encrypted password '$(cat /var/lib/nethserver/secrets/zabbix)'" | sudo -i -u postgres psql
 #echo "create database zabbix owner zabbix" | sudo -u postgres psql
-sudo -i -u postgres createdb -O zabbix -E Unicode -T template0 zabbix
+sudo -i -u postgres createdb -O zabbix -E Unicode -T template0 zabbix 1>&- 2>&-
 
 # Set zabbix shell to bash for login as zabbix user to write db
 usermod -s /bin/bash zabbix
 
 # Fill DB
-zcat $(rpm -ql zabbix-server-pgsql | grep create.sql.gz) | sudo -u zabbix psql zabbix
+zcat $(rpm -ql zabbix-server-pgsql | grep create.sql.gz) | sudo -u zabbix psql zabbix 1>&- 2>&-
+
+# Add double patch for Zabbix 5
+rpm -ql zabbix-server-pgsql | grep double.sql && cat $(rpm -ql zabbix-server-pgsql | grep double.sql) | sudo -u zabbix psql zabbix 1>&- 2>&-
 
 # Set zabbix shell to /bin/false again for security
 usermod -s /bin/false zabbix
 
-# import map images of Andy Wismer
-mv /root/zabbiximages /var/lib/pgsql/data/
-cd /var/lib/pgsql/data/zabbiximages
-for d in *.png; do su postgres -c "psql zabbix postgres -c \"insert into images (imageid,imagetype,name,image) values ((select max(imageid) +1 from images),1,'$d',pg_read_binary_file('zabbiximages/$d'));\""; done
-
-# copy backup monitoring script
-cp /usr/local/bin/nethbackup_check /usr/local/bin/nethbackup_check.py
+# import map images of Andy Wismer only if not exist to not slow down nethserver-zabbix-update
+if [ ! -d "/var/lib/pgsql/data/zabbiximages" ]; then
+  mkdir -p /var/lib/pgsql/data/zabbiximages
+  tar -xzf /root/images.tar.gz /var/lib/pgsql/data/zabbiximages
+  cd /var/lib/pgsql/data/zabbiximages
+  for d in *.png; do su postgres -c "psql zabbix postgres -c \"insert into images (imageid,imagetype,name,image) values ((select max(imageid) +1 from images),1,'$d',pg_read_binary_file('zabbiximages/$d'));\" 1>&- 2>&-"; done
+fi

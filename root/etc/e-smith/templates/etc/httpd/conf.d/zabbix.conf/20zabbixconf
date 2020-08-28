@@ -9,7 +9,9 @@ Alias /zabbix /usr/share/zabbix
     AllowOverride None
 
     <FilesMatch \.php$>
-      SetHandler "proxy:fcgi://127.0.0.1:9003"
+      #SetHandler "proxy:fcgi://127.0.0.1:9003"
+      # Use socket for php
+      SetHandler "proxy:unix:/var/run/rh-php73-php-fpm/nethserver-zabbix-php73.sock|fcgi://localhost/"
     </FilesMatch>
 
     <IfModule mod_authz_core.c>
