@@ -302,7 +302,7 @@ Include=/etc/zabbix/zabbix_agentd.d/*.conf
 #
 # Mandatory: no
 # Default:
-# LoadModulePath=${libdir}/modules
+# LoadModulePath=${"libdir"}/modules
 
 ### Option: LoadModule
 #	Module to load at agent startup. Modules are used to extend functionality of the agent.
