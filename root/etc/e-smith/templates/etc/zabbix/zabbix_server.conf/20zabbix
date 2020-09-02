@@ -496,7 +496,7 @@ Timeout=4
 #
 # Mandatory: no
 # Default:
-# AlertScriptsPath=${datadir}/zabbix/alertscripts
+# AlertScriptsPath=${"datadir"}/zabbix/alertscripts
 
 AlertScriptsPath=/usr/lib/zabbix/alertscripts
 
@@ -506,7 +506,7 @@ AlertScriptsPath=/usr/lib/zabbix/alertscripts
 #
 # Mandatory: no
 # Default:
-# ExternalScripts=${datadir}/zabbix/externalscripts
+# ExternalScripts=${"datadir"}/zabbix/externalscripts
 
 ExternalScripts=/usr/lib/zabbix/externalscripts
 
@@ -616,7 +616,7 @@ LogSlowQueries=3000
 #
 # Mandatory: no
 # Default:
-# SSLCertLocation=${datadir}/zabbix/ssl/certs
+# SSLCertLocation=${"datadir"}/zabbix/ssl/certs
 
 ### Option: SSLKeyLocation
 #	Location of private keys for SSL client certificates.
@@ -624,7 +624,7 @@ LogSlowQueries=3000
 #
 # Mandatory: no
 # Default:
-# SSLKeyLocation=${datadir}/zabbix/ssl/keys
+# SSLKeyLocation=${"datadir"}/zabbix/ssl/keys
 
 ### Option: SSLCALocation
 #	Override the location of certificate authority (CA) files for SSL server certificate verification.
@@ -643,7 +643,7 @@ LogSlowQueries=3000
 #
 # Mandatory: no
 # Default:
-# LoadModulePath=${libdir}/modules
+# LoadModulePath=${"libdir"}/modules
 
 ### Option: LoadModule
 #	Module to load at server startup. Modules are used to extend functionality of the server.
