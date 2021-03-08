@@ -11,6 +11,7 @@ Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 #Requires: zabbix-web-pgsql-scl
 Requires: nethserver-postgresql,zabbix-server-pgsql,zabbix-agent,zabbix-web,net-snmp-utils,nethserver-net-snmp,php-pgsql,nethserver-rh-php73-php-fpm
+Requires: nmap
 Conflicts: nethserver-zabbix22
 BuildRequires: nethserver-devtools
 BuildArch: noarch
