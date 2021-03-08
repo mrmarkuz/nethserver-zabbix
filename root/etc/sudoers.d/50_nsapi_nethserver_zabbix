@@ -4,6 +4,6 @@
 Cmnd_Alias NSAPI_NETHSERVER_ZABBIX = \
     /usr/libexec/nethserver/api/nethserver-zabbix/read
 
-zabbix ALL=(ALL) NOPASSWD: /usr/bin/nmap -O *
+zabbix ALL= NOPASSWD: /usr/bin/nmap
 
 Defaults!NSAPI_NETHSERVER_ZABBIX !requiretty
