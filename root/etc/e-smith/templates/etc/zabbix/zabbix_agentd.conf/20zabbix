@@ -104,6 +104,8 @@ Server=127.0.0.1
 # Default:
 # ListenPort=10050
 
+ListenPort={${'zabbix-agent'}{'TCPPort'}||'10050'}
+
 ### Option: ListenIP
 #	List of comma delimited IP addresses that the agent should listen on.
 #	First IP address is sent to Zabbix server if connecting to it to retrieve list of active checks.
@@ -146,7 +148,7 @@ ServerActive=127.0.0.1
 # Default:
 # Hostname=
 
-Hostname=Zabbix
+Hostname={$SystemName}.{$DomainName}
 
 ### Option: HostnameItem
 #	Item used for generating Hostname if it is undefined. Ignored if Hostname is defined.

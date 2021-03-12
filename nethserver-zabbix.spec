@@ -20,6 +20,9 @@ BuildArch: noarch
 NethServer Zabbix configuration
 
 %changelog
+* Fri Mar 12 2021 Markus Neuberger <info@markusneuberger.at> - 0.0.1-9
+- Add TCPPort to templates
+- Add hostname to zabbix_agentd.conf
 * Mon May 18 2020 Markus Neuberger <info@markusneuberger.at> - 0.0.1-8
 - Add support for Zabbix 5 LTS - thanks to dz00te
 * Mon Mar 23 2020 Markus Neuberger <info@markusneuberger.at> - 0.0.1-7

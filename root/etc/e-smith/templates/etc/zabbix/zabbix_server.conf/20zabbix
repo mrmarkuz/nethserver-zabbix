@@ -11,6 +11,8 @@
 # Default:
 # ListenPort=10051
 
+ListenPort={${'zabbix-server'}{'TCPPort'}||'10050'}
+
 ### Option: SourceIP
 #	Source IP address for outgoing connections.
 #
