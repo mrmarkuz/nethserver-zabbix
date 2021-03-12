@@ -10,7 +10,7 @@ Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 #Requires: zabbix-web-pgsql-scl
-Requires: nethserver-postgresql,zabbix-server-pgsql,zabbix-agent,zabbix-web,net-snmp-utils,nethserver-net-snmp,php-pgsql,nethserver-rh-php73-php-fpm
+Requires: nethserver-zabbix-agent,nethserver-postgresql,zabbix-server-pgsql,zabbix-web,net-snmp-utils,nethserver-net-snmp,php-pgsql,nethserver-rh-php73-php-fpm
 Requires: nmap
 Conflicts: nethserver-zabbix22
 BuildRequires: nethserver-devtools
@@ -21,8 +21,9 @@ NethServer Zabbix configuration
 
 %changelog
 * Fri Mar 12 2021 Markus Neuberger <info@markusneuberger.at> - 0.0.1-9
-- Add TCPPort to templates
+- Add TCPPort to zabbix_server.conf
 - Add hostname to zabbix_agentd.conf
+- Remove zabbix agent config and add require for agent
 * Mon May 18 2020 Markus Neuberger <info@markusneuberger.at> - 0.0.1-8
 - Add support for Zabbix 5 LTS - thanks to dz00te
 * Mon Mar 23 2020 Markus Neuberger <info@markusneuberger.at> - 0.0.1-7

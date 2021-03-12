@@ -4,18 +4,12 @@ nethserver-zabbix integrates the newest Zabbix monitoring system from Zabbix rep
 
 ## Installation
 
-Install Zabbix repo:
+Install Zabbix 5.0 LTS repo:
 
-rpm -ivh http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-release-3.4-2.el7.noarch.rpm
+yum -y install https://repo.zabbix.com/zabbix/5.0/rhel/7/x86_64/zabbix-release-5.0-1.el7.noarch.rpm
 
-Install nethserver-zabbix, browse to /zabbix and install zabbix via web.
-
-The Zabbix db user password is stored in /var/lib/nethserver/secrets/zabbix
+Browse to /zabbix and login with user Admin and password zabbix.
 
 ## Documentation
 
-https://community.nethserver.org/t/howto-install-zabbix-3-4/7841
-
-## ToDo
-
-Basic Nethgui setup
+https://www.zabbix.com/documentation/5.0/manual
