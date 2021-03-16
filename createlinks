@@ -12,6 +12,7 @@ use esmith::Build::CreateLinks qw(:all);
 my $event = 'nethserver-zabbix-update';
 event_actions ($event,
      'initialize-default-databases' => '00',
+     'nethserver-zabbix_enablerepo' => '10',
      'nethserver-zabbix-conf' => '10',
      'nethserver-zabbix-conf-db' => '90'
 );
@@ -24,21 +25,6 @@ templates2events("/etc/zabbix/web/zabbix.conf.php", $event);
 templates2events("/var/lib/pgsql/data/pg_hba.conf", $event);
 templates2events("/etc/opt/rh/rh-php73/php-fpm.d/zabbix.conf", $event);
 
-#example 1
-
-#launch several actions following one event
-# number < 10 -> action start before template expand
-# number < 90 -> action start after template expansion
-# number > 90 < 100 -> action starts after the service restart
-#event_actions($event, qw(
-#             nethserver-zabbix-conf 20
-#));
-#expand templates following one event
-#event_templates($event, qw(
-#                /etc/httpd/conf.d/virtualhosts.conf
-#                /etc/Other/Path
-#));
-#restart services following one event
 event_services($event,
                'zabbix-server' => 'restart',
                'zabbix-agent' => 'restart',
