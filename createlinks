@@ -12,7 +12,6 @@ use esmith::Build::CreateLinks qw(:all);
 my $event = 'nethserver-zabbix-update';
 event_actions ($event,
      'initialize-default-databases' => '00',
-     'nethserver-zabbix_enablerepo' => '10',
      'nethserver-zabbix-conf' => '10',
      'nethserver-zabbix-conf-db' => '90'
 );
@@ -23,6 +22,7 @@ templates2events("/etc/zabbix/zabbix_server.conf", $event);
 templates2events("/etc/zabbix/web/zabbix.conf.php", $event);
 templates2events("/var/lib/pgsql/data/pg_hba.conf", $event);
 templates2events("/etc/opt/rh/rh-php73/php-fpm.d/zabbix.conf", $event);
+templates2events("/etc/nethserver/eorepo.conf", $event);
 
 event_services($event,
                'zabbix-server' => 'restart',
