@@ -2,7 +2,7 @@ Summary: nethserver-zabbix sets up the monitoring system
 %define name nethserver-zabbix
 Name: %{name}
 %define version 0.0.1
-%define release 9
+%define release 10
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
