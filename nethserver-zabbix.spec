@@ -2,7 +2,7 @@ Summary: nethserver-zabbix sets up the monitoring system
 %define name nethserver-zabbix
 Name: %{name}
 %define version 0.0.1
-%define release 10
+%define release 11
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -10,7 +10,7 @@ Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 #Requires: zabbix-web-pgsql-scl
-Requires: nethserver-zabbix-agent,nethserver-postgresql,zabbix-server-pgsql,zabbix-web,net-snmp-utils,nethserver-net-snmp,php-pgsql,nethserver-rh-php73-php-fpm
+Requires: nethserver-zabbix-agent <= 0.0.1,nethserver-postgresql,zabbix-server-pgsql < 6.0,zabbix-web < 6.0,net-snmp-utils,nethserver-net-snmp,php-pgsql,nethserver-rh-php73-php-fpm
 Requires: nmap
 Conflicts: nethserver-zabbix22
 BuildRequires: nethserver-devtools
@@ -20,6 +20,8 @@ BuildArch: noarch
 NethServer Zabbix configuration
 
 %changelog
+* Sun Apr 23 2023 Markus Neuberger <info@markusneuberger.at> - 0.0.1-11
+- Stick to version 5
 * Fri Mar 12 2021 Markus Neuberger <info@markusneuberger.at> - 0.0.1-9
 - Add TCPPort to zabbix_server.conf
 - Add hostname to zabbix_agentd.conf
