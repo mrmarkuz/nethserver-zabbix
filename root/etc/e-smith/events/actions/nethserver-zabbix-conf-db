@@ -1,31 +1,82 @@
 #!/bin/bash
 
-# create and chown logfiles
-#touch /var/log/zabbix/zabbix_agentd.log
-#chown zabbix:zabbix /var/log/zabbix/zabbix_server.log /var/log/zabbix/zabbix_agentd.log
+# Start postgres to be able to import data
+systemctl is-active --quiet rh-postgresql13-postgresql
+if [[ $? -ne 0 ]]; then
+  systemctl start rh-postgresql13-postgresql
+  sleep 3
+fi
 
-# Create DB and user
-echo "create role zabbix with CREATEDB LOGIN PASSWORD '$(cat /var/lib/nethserver/secrets/zabbix)'" | sudo -i -u postgres psql 1>&- 2>&-
-echo "alter user zabbix with encrypted password '$(cat /var/lib/nethserver/secrets/zabbix)'" | sudo -i -u postgres psql
-#echo "create database zabbix owner zabbix" | sudo -u postgres psql
-sudo -i -u postgres createdb -O zabbix -E Unicode -T template0 zabbix 1>&- 2>&-
+# Check if migration is needed
+su - postgres -c "scl enable rh-postgresql13 -- psql -p 55435 -lqt | cut -d \| -f 1 | grep -q -w zabbix" 1>&- 2>&-
+if [ $? -eq 1 ]; then # new database does not exist
 
-# Set zabbix shell to bash for login as zabbix user to write db
-usermod -s /bin/bash zabbix
+  su - postgres -c "psql -lqt | cut -d \| -f 1 | grep -q -w zabbix" 1>&- 2>&-
+  if [ $? -eq 0 ]; then # old database does exist
 
-# Fill DB
-zcat $(rpm -ql zabbix-server-pgsql | grep create.sql.gz) | sudo -u zabbix psql zabbix 1>&- 2>&-
+    password=`perl -e "use NethServer::Password; print NethServer::Password::store('zabbix');"`
+    echo "Create DB user and empty DB"
+    echo "CREATE USER zabbix WITH PASSWORD '$password'; CREATE database zabbix OWNER zabbix; GRANT ALL PRIVILEGES ON DATABASE zabbix to zabbix;" | sudo -u postgres scl enable rh-postgresql13 -- psql -p 55435 1>&- 2>&-
+    echo "Migrate DB"
+    su - postgres -c "pg_dump zabbix" | sudo -u zabbix scl enable rh-postgresql13 -- psql -p 55435 zabbix 1>&- 2>&-
+    su - postgres -c "scl enable rh-postgresql13 -- psql -p 55435 zabbix -c '\dt'" | cut -d \| -f 2 | grep -q -w users 1>&- 2>&-
+    if [ $? -eq 0 ]; then # new database table does exist
+      drop_sql=`mktemp`
+      chown postgres:postgres $drop_sql
+      echo "New zabbix DB including users table exists so we can remove the old DB"
+      echo "UPDATE pg_database SET datallowconn = 'false' WHERE datname = 'zabbix';" >> $drop_sql
+      echo "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'zabbix';" >> $drop_sql
+      echo "drop database zabbix;" >> $drop_sql
+      sudo -u postgres psql < $drop_sql 1>&- 2>&-
+      rm -f $drop_sql
+      echo Migration finished
+      # Restart service to upgrade DB if necessary
+      systemctl restart zabbix-server
+    else
+      echo "Error: DB wasn't migrated"
+      exit 1
+    fi
+  else
 
-# Add double patch for Zabbix 5
-rpm -ql zabbix-server-pgsql | grep double.sql && cat $(rpm -ql zabbix-server-pgsql | grep double.sql) | sudo -u zabbix psql zabbix 1>&- 2>&-
+    # Create DB and user
+    echo "create role zabbix with CREATEDB LOGIN PASSWORD '$(cat /var/lib/nethserver/secrets/zabbix)'" | sudo -i -u postgres scl enable rh-postgresql13 -- psql -p 55435
+    echo "alter user zabbix with encrypted password '$(cat /var/lib/nethserver/secrets/zabbix)'" | sudo -i -u postgres scl enable rh-postgresql13 -- psql -p 55435
+    su - postgres -c 'scl enable rh-postgresql13 -- createdb -p 55435 -O zabbix -E Unicode -T template0 zabbix'
 
-# Set zabbix shell to /bin/false again for security
-usermod -s /bin/false zabbix
+    # Set zabbix shell to bash for login as zabbix user to write db
+    usermod -s /bin/bash zabbix
+
+    # Fill DB with schema
+    cat /usr/share/zabbix-postgresql/schema.sql | sudo -i -u zabbix scl enable rh-postgresql13 -- psql -p 55435 zabbix 1>&- 2>&-
+
+    # Add images
+    cat /usr/share/zabbix-postgresql/images.sql | sudo -i -u zabbix scl enable rh-postgresql13 -- psql -p 55435 zabbix 1>&- 2>&-
+
+    # Prepare history
+    cat /usr/share/zabbix-postgresql/history_pk_prepare.sql | sudo -i -u zabbix scl enable rh-postgresql13 -- psql -p 55435 zabbix 1>&- 2>&-
+
+    # Add double patch
+    cat /usr/share/zabbix-postgresql/double.sql | sudo -i -u zabbix scl enable rh-postgresql13 -- psql -p 55435 zabbix 1>&- 2>&-
+
+    # Add data
+    cat /usr/share/zabbix-postgresql/data.sql | sudo -i -u zabbix scl enable rh-postgresql13 -- psql -p 55435 zabbix 1>&- 2>&-
+
+    # Set zabbix shell to /bin/false again for security
+    usermod -s /bin/false zabbix
+
+    # Remove image files to readd them to the database later
+    if [ -d "/var/opt/rh/rh-postgresql13/lib/pgsql/data/zabbiximages" ]; then
+      rm -r /var/opt/rh/rh-postgresql13/lib/pgsql/data/zabbiximages
+    fi
+  fi
+fi
 
 # import map images of Andy Wismer only if not exist to not slow down nethserver-zabbix-update
-if [ ! -d "/var/lib/pgsql/data/zabbiximages" ]; then
-  mkdir -p /var/lib/pgsql/data/zabbiximages
-  tar -xzf /root/images.tar.gz -C /var/lib/pgsql/data/zabbiximages
-  cd /var/lib/pgsql/data/zabbiximages
-  for d in *.png; do su postgres -c "psql zabbix postgres -c \"insert into images (imageid,imagetype,name,image) values ((select max(imageid) +1 from images),1,'$d',pg_read_binary_file('zabbiximages/$d'));\" 1>&- 2>&-"; done
+if [ ! -d "/var/opt/rh/rh-postgresql13/lib/pgsql/data/zabbiximages" ]; then
+  echo "Import images"
+  mkdir -p /var/opt/rh/rh-postgresql13/lib/pgsql/data/zabbiximages
+  tar -xzf /root/images.tar.gz -C /var/opt/rh/rh-postgresql13/lib/pgsql/data/zabbiximages
+  chown -R postgres:postgres /var/opt/rh/rh-postgresql13/lib/pgsql/data/zabbiximages
+  cd /var/opt/rh/rh-postgresql13/lib/pgsql/data/zabbiximages
+  for d in *.png; do sudo -u postgres scl enable rh-postgresql13 -- psql -p 55435 zabbix -c "insert into images (imageid,imagetype,name,image) values ((select max(imageid) +1 from images),1,'$d',pg_read_binary_file('/var/opt/rh/rh-postgresql13/lib/pgsql/data/zabbiximages/$d'));" 1>&- 2>&-; done
 fi

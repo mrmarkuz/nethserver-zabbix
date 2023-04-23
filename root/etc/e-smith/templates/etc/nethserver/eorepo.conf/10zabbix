@@ -1,7 +1,0 @@
-{
-# enable the  repo of zabbix
-
-push @repos, 'zabbix', 'zabbix-frontend';
-
-    '';
-}

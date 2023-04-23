@@ -1,3 +1,3 @@
 #!/bin/bash
 
-su - postgres -c "pg_dump zabbix > /var/lib/nethserver/zabbix/backup/zabbix.sql"
+su - postgres -c "scl enable rh-postgresql13 -- pg_dump -p 55435 zabbix > /var/lib/nethserver/zabbix/backup/zabbix.sql"

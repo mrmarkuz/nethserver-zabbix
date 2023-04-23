@@ -1,8 +1,8 @@
 Summary: nethserver-zabbix sets up the monitoring system
 %define name nethserver-zabbix
 Name: %{name}
-%define version 0.0.1
-%define release 11
+%define version 0.0.2
+%define release 1
 Version: %{version}
 Release: %{release}%{?dist}
 License: GPL
@@ -10,7 +10,7 @@ Group: Networking/Daemons
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 #Requires: zabbix-web-pgsql-scl
-Requires: nethserver-zabbix-agent <= 0.0.1,nethserver-postgresql,zabbix-server-pgsql < 6.0,zabbix-web < 6.0,net-snmp-utils,nethserver-net-snmp,php-pgsql,nethserver-rh-php73-php-fpm
+Requires: nethserver-zabbix-agent,nethserver-postgresql13,zabbix-server-pgsql,zabbix-web,net-snmp-utils,nethserver-net-snmp,php-pgsql,nethserver-rh-php73-php-fpm
 Requires: nmap
 Conflicts: nethserver-zabbix22
 BuildRequires: nethserver-devtools
@@ -20,6 +20,12 @@ BuildArch: noarch
 NethServer Zabbix configuration
 
 %changelog
+* Sun Apr 23 2023 Markus Neuberger <info@markusneuberger.at> - 0.0.2-1
+- Raise to version 6 from epel
+- Switch from nethserver-postgresql to nethserver-postgresql13
+- Add new config file templates for agent, server and web
+- Update backup and restore for postgresql13
+- Update service and template for postgresql13
 * Sun Apr 23 2023 Markus Neuberger <info@markusneuberger.at> - 0.0.1-11
 - Stick to version 5
 * Fri Mar 12 2021 Markus Neuberger <info@markusneuberger.at> - 0.0.1-9

@@ -9,10 +9,10 @@ if [ -f /var/lib/nethserver/zabbix/backup/zabbix.sql ]; then
     # drop the db, then recreate it
     echo "DROP DATABASE zabbix;" >> $drop_sql
     password=`perl -e "use NethServer::Password; print NethServer::Password::store('zabbix');"`
-    echo "CREATE database zabbix; CREATE USER zabbix WITH PASSWORD '$password'; GRANT ALL PRIVILEGES ON DATABASE zabbix to zabbix;" >> $drop_sql 
+    echo "CREATE USER zabbix WITH PASSWORD '$password'; CREATE database zabbix OWNER zabbix; GRANT ALL PRIVILEGES ON DATABASE zabbix to zabbix;" >> $drop_sql 
     # allow new connections to db
     echo "UPDATE pg_database SET datallowconn = 'true' WHERE datname = 'zabbix';" >> $drop_sql
-    su - postgres -c "psql < $drop_sql" >/dev/null
-    su - postgres -c "psql zabbix < /var/lib/nethserver/zabbix/backup/zabbix.sql" >/dev/null
+    sudo -u postgres scl enable rh-postgresql13 -- psql -p 55435 < $drop_sql 1>&- 2>&-
+    sudo -u zabbix scl enable rh-postgresql13 -- psql -p 55435 zabbix < /var/lib/nethserver/zabbix/backup/zabbix.sql 1>&- 2>&-
     rm -f $drop_sql
 fi
